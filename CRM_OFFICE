@@ -1,0 +1,132 @@
+package seleniumWebdriver;
+
+
+import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.Select;
+
+public class CRM_formcruise {
+	public static void main(String[] args) throws InterruptedException {
+	   System.out.println("enter the chrome/edge/firefox");
+	   Scanner sc=new Scanner(System.in);
+	   String browserName=sc.nextLine();
+	   WebDriver driver=null;
+	  
+	if(browserName.equalsIgnoreCase("chrome")) {
+		driver=new ChromeDriver();		   
+	   }
+	
+	if(browserName.equalsIgnoreCase("edge")) {
+		driver=new EdgeDriver();		   
+	   }
+	
+	if(browserName.equalsIgnoreCase("firefox")) {
+		driver=new FirefoxDriver();		   
+	   }
+	
+	driver.get("https://devglow.webnerserver.com/");
+	driver.manage().window().maximize();
+	driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+	//driver.manage().window().fullscreen();
+	
+	//click on sign in
+	driver.findElement(By.id("signin_active")).click();
+	
+	//login page
+	WebElement login= driver.findElement(By.id("UserName"));
+	login.sendKeys("piyush.rana@webners.com");
+	
+	WebElement pwd= driver.findElement(By.id("Password"));
+	pwd.sendKeys("Wbs@@6767");
+	//click on login
+	driver.findElement(By.id("submitbtn")).submit();
+	
+	//click on CRM
+	driver.findElement(By.className("nav-text")).click();
+	//System.out.println("sucessfully click on CRM");
+	
+	//click on lead
+	driver.findElement(By.xpath("//span[normalize-space()='Leads']")).click();
+	
+	//click on add lead
+	Thread.sleep(2000);
+	try {
+	driver.findElement(By.xpath("//div[@title=\"Add Lead\"]//i[@class=\"fa-solid fa-plus\"]")).click(); 
+	}
+	catch(Exception e) {
+		System.out.println("something is wrong in add lead "+ e);
+	}	
+	
+	/*
+	 * lead information upto zip code
+	 */
+	
+	try {
+	driver.findElement(By.id("Name")).sendKeys("selenium test1");
+	}
+	catch(Exception e) {
+		System.out.println("somthing is wrong in filed name ");
+		
+	}
+	
+	WebElement dropdown=driver.findElement(By.xpath("//select[@title='Piyush Rana (piyush.rana@webners.com)']"));
+
+	// don't use click operation in this class
+	Select drop=new Select(dropdown);
+	drop.selectByIndex(1);
+	System.out.println("click on field");
+	
+	// gender 
+	WebElement gender=driver.findElement(By.id("Gender"));
+	Select gendr=new Select(gender);
+	gendr.selectByValue("Female");
+	
+	//Office Branch Code*
+	driver.findElement(By.id("LeadBranches")).sendKeys("00075");
+	
+	//adress field
+	driver.findElement(By.id("Address")).sendKeys("sector 67 mohali");
+	driver.findElement(By.id("Address2")).sendKeys("sector 51 mohali");
+	
+	//state
+	WebElement state=driver.findElement(By.id("state"));
+	
+	Select drpDwn=new Select(state);
+	drpDwn.selectByVisibleText("Florida");
+	Thread.sleep(2000);
+	WebElement city=driver.findElement(By.id("city"));
+	Select drpDwn1=new Select(city);
+	drpDwn1.selectByIndex(5);
+	
+	System.out.println("state &  city selected" );
+	driver.findElement(By.id("ZipCode")).sendKeys("qwert_123");
+	
+	//driver.findElement(By.id("leadSaveButton")).submit();
+	System.out.println("lead info is save sucessfully: ");
+	// cencel 
+	driver.findElement(By.xpath("//body/div[@id='AddLeadModal']/div[@class='modal-dialog']/"
+	+ "div[@class='modal-content']/form[@id='LeadForm']/div[@class='mt-3 modal-footer']/button[1]")).click();
+	
+	Thread.sleep(2000);
+	driver.findElement(By.xpath("//button[normalize-space()='Yes']")).click();
+	Thread.sleep(5000);
+	driver.quit();
+	
+	
+	}
+	
+}
+	
+	
+	
+	
+	
+	
+	
